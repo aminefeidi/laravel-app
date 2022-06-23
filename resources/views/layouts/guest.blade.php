@@ -7,16 +7,34 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
-
-        <!-- Styles -->
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
+
+        <link href="https://fonts.googleapis.com/css?family=Karla:400,700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/4.8.95/css/materialdesignicons.min.css">
+        
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/main.css') }}">
+
+        <!-- Vendor CSS-->
+    <link href="{{ asset('css/select2.min.css') }}" rel="stylesheet" media="all">
+    <link href="{{ asset('css/daterangepicker.css') }}" rel="stylesheet" media="all">
+
     </head>
     <body class="font-sans antialiased bg-light">
         {{ $slot }}
+        <!-- Jquery JS-->
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <!-- Vendor JS-->
+    <script src="{{ asset('js/select2.min.js') }}"></script>
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.js') }}"></script>
+
+    <!-- Main JS-->
+    <script src="js/global.js"></script>
     </body>
 </html>
