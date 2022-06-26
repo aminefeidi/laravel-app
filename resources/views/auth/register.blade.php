@@ -3,20 +3,22 @@
         <div class="wrapper wrapper--w680">
             <div class="card card-4">
                 <div class="card-body">
-                    <img src="{{asset('images/logo.png')}}" width="150" height="50">
+                    <img src="{{ asset('images/logo.png') }}" width="150" height="50">
                     <h2 class="title">Registration Form</h2>
-                    <form method="POST" >
+                    <x-auth-validation-errors class="mb-4" :errors="$errors" />
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
                         <div class="row row-space">
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">first name</label>
-                                    <input class="input--style-4" type="text" name="firstname">
+                                    <input class="input--style-4" type="text" name="fName" id="fName">
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">last name</label>
-                                    <input class="input--style-4" type="text" name="lastname">
+                                    <input class="input--style-4" type="text" name="lName" id="lName">
                                 </div>
                             </div>
                         </div>
@@ -24,10 +26,8 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Birthday</label>
-                                    <div class="input-group-icon">
-                                        <input class="input--style-4 js-datepicker" type="text" name="birthday">
-                                        <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
-                                    </div>
+                                    <input class="input--style-4" type="date" name="birthdate" id="birthdate">
+
                                 </div>
                             </div>
                             <div class="col-2">
@@ -35,11 +35,11 @@
                                     <label class="label">Gender</label>
                                     <div class="p-t-10">
                                         <label class="radio-container m-r-45">Male
-                                            <input type="radio" checked="checked" name="gender">
+                                            <input type="radio" checked="checked" name="gender" value="male">
                                             <span class="checkmark"></span>
                                         </label>
                                         <label class="radio-container">Female
-                                            <input type="radio" name="gender">
+                                            <input type="radio" name="gender" value="female">
                                             <span class="checkmark"></span>
                                         </label>
                                     </div>
@@ -50,52 +50,55 @@
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Email</label>
-                                    <input class="input--style-4" type="email" name="email">
+                                    <input class="input--style-4" type="email" name="email" id="email">
                                 </div>
                             </div>
                             <div class="col-2">
                                 <div class="input-group">
                                     <label class="label">Phone Number</label>
-                                    <input class="input--style-4" type="text" name="phone">
+                                    <input class="input--style-4" type="text" name="phone_number" id="phone_number">
                                 </div>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="label">personnel navigant</label>
-                            <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="subject">
-                                    <option disabled="disabled" selected="selected">Choose option</option>
-                                    <option>CDB</option>
-                                    <option>GPL</option>
-                                    <option>PNC</option>
-                                    <option>CCP</option>
-                                    <option>CC</option>  
+                            <div class="rs-select2 js-select-simple select--no-search ml-4">
+                                <select name="personnel" id="personnel">
+                                    <option disabled="disabled" selected="selected" value="">Choose option
+                                    </option>
+                                    <option value="CDB">CDB</option>
+                                    <option value="GPL">GPL</option>
+                                    <option value="PNC">PNC</option>
+                                    <option value="CCP">CCP</option>
+                                    <option value="CC">CC</option>
                                 </select>
                                 <div class="select-dropdown"></div>
                             </div>
                         </div>
                         <div class="input-group">
                             <label class="label">profession</label>
-                            <div class="rs-select2 js-select-simple select--no-search">
-                                <select name="subjectt">
-                                    <option disabled="disabled" selected="selected">Choose option</option>
-                                    <option>Pilote</option>
-                                    <option>Hotesse</option>
-                                    <option>STEWAD</option>     
+                            <div class="rs-select2 js-select-simple select--no-search ml-4">
+                                <select name="profession" id="profession">
+                                    <option disabled="disabled" selected="selected" value="">Choose option
+                                    </option>
+                                    <option value="Pilote">Pilote</option>
+                                    <option value="Hotesse">Hotesse</option>
+                                    <option value="STEWAD">STEWAD</option>
                                 </select>
                                 <div class="select-dropdown"></div>
                             </div>
                         </div>
                         <div>
-                            <label class="label">mot de passe</label>   
-                            <input  class="input--style-4" type="password" name="password">
+                            <label class="label">mot de passe</label>
+                            <input class="input--style-4" type="password" name="password" id="password">
                         </div>
                         <div>
-                            <label class="label"> confirmer mot de passe</label>   
-                            <input  class="input--style-4" type="password" name="cofirmPassword">
-                           
+                            <label class="label"> confirmer mot de passe</label>
+                            <input class="input--style-4" type="password" name="password_confirmation"
+                                id="password_confirmation">
+
                         </div>
-                        
+
 
                         <div class="p-t-15">
                             <button class="btn btn--radius-2 btn--blue" type="submit">Submit</button>

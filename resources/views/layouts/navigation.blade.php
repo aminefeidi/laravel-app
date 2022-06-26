@@ -4,7 +4,8 @@
         <a class="navbar-brand" href="/">
             <x-application-logo width="36" />
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -12,7 +13,23 @@
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav me-auto">
                 <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
+                    {{ __('consulter programme d\'un PN') }}
+                </x-nav-link>
+
+                <x-nav-link href="{{ route('demandes') }}" :active="request()->routeIs('demandes')">
+                    {{ __('Gestion des demandes') }}
+                </x-nav-link>
+
+                <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    {{ __('Suivi des reserves') }}
+                </x-nav-link>
+
+                <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    {{ __('Suivi des open-time') }}
+                </x-nav-link>
+
+                <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    {{ __('Gestion des notes') }}
                 </x-nav-link>
             </ul>
 
@@ -23,7 +40,7 @@
                 @auth
                     <x-dropdown id="settingsDropdown">
                         <x-slot name="trigger">
-                            {{ Auth::user()->name }}
+                            {{ Auth::user()->fName }} {{ Auth::user()->lName }}
                         </x-slot>
 
                         <x-slot name="content">
@@ -32,7 +49,7 @@
                                 @csrf
 
                                 <x-dropdown-link :href="route('logout')"
-                                                 onclick="event.preventDefault();
+                                    onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>

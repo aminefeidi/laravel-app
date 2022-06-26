@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DemandeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,4 +22,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+Route::get('/demandes', [DemandeController::class, 'index'])->name('demandes');
+
+
+require __DIR__ . '/auth.php';
