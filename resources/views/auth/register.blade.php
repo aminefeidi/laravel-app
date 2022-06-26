@@ -67,7 +67,7 @@
                                     <option disabled="disabled" selected="selected" value="">Choose option
                                     </option>
                                     <option value="CDB">CDB</option>
-                                    <option value="GPL">GPL</option>
+                                    <option value="OPL">OPL</option>
                                     <option value="PNC">PNC</option>
                                     <option value="CCP">CCP</option>
                                     <option value="CC">CC</option>
@@ -76,14 +76,15 @@
                             </div>
                         </div>
                         <div class="input-group">
-                            <label class="label">profession</label>
+                            <label class="label">Secteur</label>
                             <div class="rs-select2 js-select-simple select--no-search ml-4">
                                 <select name="profession" id="profession">
                                     <option disabled="disabled" selected="selected" value="">Choose option
                                     </option>
-                                    <option value="Pilote">Pilote</option>
-                                    <option value="Hotesse">Hotesse</option>
-                                    <option value="STEWAD">STEWAD</option>
+                                    <option value="A320">A320</option>
+                                    <option value="A330">A330</option>
+                                    <option value="B737">B737</option>
+                                    <option value="PNC">PNC</option>
                                 </select>
                                 <div class="select-dropdown"></div>
                             </div>

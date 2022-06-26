@@ -98,10 +98,6 @@
             </div>
             <!-- Button trigger modal -->
 
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Launch demo modal
-            </button>
-
             <!-- Modal -->
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
@@ -115,7 +111,7 @@
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p x-text="JSON.stringify(selected)"></p>
+                            {{-- <p x-text="JSON.stringify(selected)"></p> --}}
                             <form action="{{ route('demandes') }}" method="post">
                                 <div class="mb-3">
                                     <p>Type:</p>
