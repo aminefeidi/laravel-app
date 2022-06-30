@@ -15,10 +15,14 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{ asset('css/header.css') }}">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="//unpkg.com/alpinejs" defer></script>
+
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.css' rel='stylesheet' />
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.0/main.min.js'></script>
 </head>
 
 <body class="font-sans antialiased">

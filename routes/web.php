@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DemandeController;
+use App\Http\Controllers\ProgrammeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +24,12 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::get('/demandes', [DemandeController::class, 'index'])->name('demandes');
+
+Route::get('/programme', [ProgrammeController::class, 'index'])->name('programme');
+
+Route::post('/demandes', [DemandeController::class, 'store'])->name('demandes.store');
+
+Route::delete('/demandes/{demande}', [DemandeController::class, 'destroy'])->name('demandes.destroy');
 
 
 require __DIR__ . '/auth.php';

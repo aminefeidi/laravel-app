@@ -36,6 +36,7 @@
                                 Type
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                <li><a class="dropdown-item" href="?type=">Show All</a></li>
                                 <li><a class="dropdown-item" href="?type=conge">Conge</a></li>
                                 <li><a class="dropdown-item" href="?type=vol">Vol</a></li>
                                 <li><a class="dropdown-item" href="?type=rotation">Rotation</a></li>
@@ -85,8 +86,20 @@
                                     <button class="btn btn-outline-primary" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal" @click="selected = {{ $demande }}"> <i
                                             class="fa fa-pencil mr-2"></i><span class="fw-bolder">Edit</span></button>
-                                    <button type="button" class="btn btn-outline-danger"><i
+                                    <button type="button" class="btn btn-outline-danger"
+                                        onclick="
+                                    var result = confirm('Are you sure you want to delete this record?');
+                                    
+                                    if(result){
+                                        event.preventDefault();
+                                        document.getElementById('delete-form-{{ $demande->id }}').submit();
+                                    }"><i
                                             class="fa fa-trash mr-2"></i>Delete</button>
+                                    <form method="POST" id="delete-form-{{ $demande->id }}"
+                                        action="{{ route('demandes.destroy', [$demande->id]) }}">
+                                        @method('DELETE')
+                                        @csrf
+                                    </form>
                                 </td>
                             </tr>
                         @empty
@@ -110,9 +123,12 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            {{-- <p x-text="JSON.stringify(selected)"></p> --}}
-                            <form action="{{ route('demandes') }}" method="post">
+                        <form action="{{ route('demandes') }}" method="post">
+                            @csrf
+                            <input type="hidden" id="id" name="id" x-model="selected.id">
+                            <div class="modal-body">
+                                {{-- <p x-text="JSON.stringify(selected)"></p> --}}
+
                                 <div class="mb-3">
                                     <p>Type:</p>
                                     <div class="form-check">
@@ -153,12 +169,14 @@
                                     <label for="commentaire" class="form-label">Commentaire</label>
                                     <textarea class="form-control" id="commentaire" name="commentaire" rows="3" x-model="selected.commentaire"></textarea>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary"
+                                    data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
