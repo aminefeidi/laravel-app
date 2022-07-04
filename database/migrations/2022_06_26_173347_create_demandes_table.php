@@ -19,6 +19,7 @@ class CreateDemandesTable extends Migration
             $table->date('date_debut')->nullable();
             $table->date('date_fin')->nullable();
             $table->string('commentaire')->nullable();
+            $table->string('matricule');
             $table->timestamps();
         });
     }

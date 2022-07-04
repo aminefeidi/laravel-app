@@ -16,17 +16,20 @@
             var calendarEl = document.getElementById('calendar');
 
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                timeZone: 'UTC',
                 themeSystem: 'bootstrap5',
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                weekNumbers: true,
-                dayMaxEvents: true, // allow "more" link when too many events
-                events: 'https://fullcalendar.io/api/demo-feeds/events.json',
-                editable: true
+                events: '/programme/data',
+                editable: true,
+                eventDataTransform: function(eventData) {
+                    eventData.title = eventData.tlc;
+                    eventData.start = new Date(eventData.departure_date);
+                    eventData.end = new Date(eventData.arrival_date);
+                    return eventData;
+                },
             });
 
             calendar.render();

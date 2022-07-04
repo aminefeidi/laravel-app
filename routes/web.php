@@ -27,6 +27,8 @@ Route::get('/demandes', [DemandeController::class, 'index'])->name('demandes');
 
 Route::get('/programme', [ProgrammeController::class, 'index'])->name('programme');
 
+Route::get('/programme/data', [ProgrammeController::class, 'findAll'])->name('programme.data');
+
 Route::post('/demandes', [DemandeController::class, 'store'])->name('demandes.store');
 
 Route::delete('/demandes/{demande}', [DemandeController::class, 'destroy'])->name('demandes.destroy');

@@ -19,6 +19,19 @@ class ProgrammeController extends Controller
         ]);
     }
 
+    public function findAll(Request $request)
+    {
+        if (!$request->has('start') || !$request->has('end')) {
+            return response()->json([
+                'error' => 'Missing start or end',
+            ]);
+        }
+        $start = $request->get('start');
+        $end = $request->get('end');
+        $data = Programme::where('departure_date', '>=', $start)->where('departure_date', '<=', $end)->get();
+        return response()->json($data);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

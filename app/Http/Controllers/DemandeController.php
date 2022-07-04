@@ -53,7 +53,10 @@ class DemandeController extends Controller
             $demande = Demande::find($request->id);
             $demande->update($request->all());
         } else {
-            Demande::create($request->all());
+            $demande = $request->all();
+            $demande['matricule'] = $request->user()->matricule;
+            //array_push($demande, ['matricule' => $request->user()->matricule]);
+            Demande::create($demande);
         }
         return redirect()->route('demandes');
     }

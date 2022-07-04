@@ -1,14 +1,19 @@
 <x-app-layout>
+    <style>
+
+    </style>
     <div class="card my-4">
-        <div class="card-body" x-data="createEmptyDemande()">
+        <div class="card-body" x-data="createEmptyDemande()" x-cloak>
             <div class="row justify-content-between">
                 <div class="col justify-content-start">
                     <h3>Demandes</h3>
                 </div>
                 <div class="col ">
-                    <div class="row justify-content-end"><button type="button" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal" @click="selected = new Demande()"
-                            class="btn btn-primary w-25">Add</button>
+                    <div class="row justify-content-end">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                            @click="selected = new Demande()" class="no-print btn btn-primary w-25">Add</button>
+                        <button type="button" @click="printDiv()"
+                            class="no-print btn btn-primary w-25 mx-4">Print</button>
                     </div>
                 </div>
             </div>
@@ -47,24 +52,27 @@
 
                 </div>
             </form>
-            <div class="table-responsive">
-                <table class="table table-responsive table-borderless">
+            <div class="table-responsive" x-ref="container">
+                <table id="table" class="table table-responsive">
 
                     <thead>
                         <tr class="bg-light">
-                            <th scope="col" width="5%"><input class="form-check-input" type="checkbox"></th>
+                            <th class="checkbox-col" scope="col" width="5%"><input class="form-check-input"
+                                    type="checkbox"></th>
                             <th scope="col" width="5%">#</th>
-                            <th scope="col" width="20%">Type</th>
-                            <th scope="col" width="10%">Date debut</th>
-                            <th scope="col" width="10%">Date fin</th>
-                            <th scope="col" width="30%">Commentaires</th>
-                            <th scope="col" class="text-end" width="20%"><span>Actions</span></th>
+                            <th scope="col" width="10%">Type</th>
+                            <th scope="col" width="20%">Date debut</th>
+                            <th scope="col" width="20%">Date fin</th>
+                            <th class="text-truncate comment" scope="col" width="10%">Matricule</th>
+                            <th class="text-truncate comment" scope="col" width="10%">Commentaires</th>
+                            <th class="actions"scope="col" class="text-end" width="20%"><span>Actions</span></th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($demandes as $demande)
                             <tr>
-                                <th scope="row"><input class="form-check-input" type="checkbox"></th>
+                                <th class="checkbox-field" scope="row"><input class="form-check-input"
+                                        type="checkbox"></th>
                                 <td>{{ $demande->id }}</td>
                                 <td>{{ $demande->type }}</td>
                                 <td>
@@ -81,8 +89,10 @@
                                         -
                                     @endif
                                 </td>
-                                <td>{{ $demande->commentaire }}</td>
-                                <td class="text-end">
+                                <td>{{ $demande->matricule }}</td>
+                                <td><span class="text-truncate">{{ $demande->commentaire }}</span>
+                                </td>
+                                <td class="text-end action-btns">
                                     <button class="btn btn-outline-primary" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal" @click="selected = {{ $demande }}"> <i
                                             class="fa fa-pencil mr-2"></i><span class="fw-bolder">Edit</span></button>
@@ -195,7 +205,14 @@
 
         createEmptyDemande = () => {
             return {
-                selected: new Demande()
+                selected: new Demande(),
+                printDiv() {
+                    var printContents = this.$refs.container.innerHTML;
+                    var originalContents = document.body.innerHTML;
+                    document.body.innerHTML = printContents;
+                    window.print();
+                    document.body.innerHTML = originalContents;
+                }
             };
         }
     </script>

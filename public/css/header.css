@@ -159,3 +159,23 @@ body {
 .green {
     color: green;
 }
+
+@media print {
+    /* styling goes here */
+    .actions {
+        display: none;
+    }
+
+    .action-btns {
+        display: none;
+    }
+
+    .comment {
+        width: 40%;
+    }
+
+    .checkbox-col,
+    .checkbox-field {
+        display: none;
+    }
+}

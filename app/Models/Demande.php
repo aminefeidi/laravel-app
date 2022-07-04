@@ -15,6 +15,7 @@ class Demande extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'matricule',
         'type',
         'date_debut',
         'date_fin',

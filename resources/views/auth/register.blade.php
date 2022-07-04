@@ -60,6 +60,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row row-space">
+                            <div class="col">
+                                <div class="input-group">
+                                    <label class="label">Matricule</label>
+                                    <input class="input--style-4" type="text" minlength="8" maxlength="8"
+                                        name="matricule" id="matricule">
+                                </div>
+                            </div>
+                        </div>
                         <div class="input-group">
                             <label class="label">personnel navigant</label>
                             <div class="rs-select2 js-select-simple select--no-search ml-4">
