@@ -27,6 +27,8 @@ Route::get('/demandes', [DemandeController::class, 'index'])->name('demandes');
 
 Route::get('/programme', [ProgrammeController::class, 'index'])->name('programme');
 
+Route::post('/programme', [ProgrammeController::class, 'import'])->name('programme.import');
+
 Route::get('/programme/data', [ProgrammeController::class, 'findAll'])->name('programme.data');
 
 Route::post('/demandes', [DemandeController::class, 'store'])->name('demandes.store');
