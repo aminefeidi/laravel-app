@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\DemandesExport;
 use App\Models\Demande;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DemandeController extends Controller
 {
@@ -29,6 +31,11 @@ class DemandeController extends Controller
             'demandes' => $demandes,
             'term' => $request->search ?? '',
         ]);
+    }
+
+    public function export()
+    {
+        return Excel::download(new DemandesExport, 'demandes.xlsx');
     }
 
     /**

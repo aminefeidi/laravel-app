@@ -12,8 +12,16 @@
                     <div class="row justify-content-end">
                         <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal"
                             @click="selected = new Demande()" class="no-print btn btn-primary w-25">Add</button>
-                        <button type="button" @click="printDiv()"
-                            class="no-print btn btn-primary w-25 mx-4">Print</button>
+                        <div class="btn-group w-25 mx-4" role="group">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-primary no-print  dropdown-toggle"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Export
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                <li><button class="dropdown-item" @click="printDiv()">PDF</button></li>
+                                <li><a class="dropdown-item" href="/demandes/export">Excel</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>

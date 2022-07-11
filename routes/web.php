@@ -33,6 +33,8 @@ Route::get('/programme/data', [ProgrammeController::class, 'findAll'])->name('pr
 
 Route::post('/demandes', [DemandeController::class, 'store'])->name('demandes.store');
 
+Route::get('/demandes/export', [DemandeController::class, 'export'])->name('demandes.export');
+
 Route::delete('/demandes/{demande}', [DemandeController::class, 'destroy'])->name('demandes.destroy');
 
 
