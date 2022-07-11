@@ -30,7 +30,7 @@ class ProgrammeController extends Controller
         }
         $start = $request->get('start');
         $end = $request->get('end');
-        $data = Programme::where('departure_date', '>=', $start)->where('departure_date', '<=', $end)->get();
+        $data = Programme::where('departure_date', '>=', $start)->where('departure_date', '<=', $end)->where('tlc', '=', $request->user()->matricule)->get();
         return response()->json($data);
     }
 

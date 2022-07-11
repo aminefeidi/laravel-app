@@ -64,8 +64,7 @@
                             <div class="col">
                                 <div class="input-group">
                                     <label class="label">Matricule</label>
-                                    <input class="input--style-4" type="text" minlength="8" maxlength="8"
-                                        name="matricule" id="matricule">
+                                    <input class="input--style-4" type="text" name="matricule" id="matricule">
                                 </div>
                             </div>
                         </div>

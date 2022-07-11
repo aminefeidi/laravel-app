@@ -98,7 +98,7 @@
                 events: '/programme/data',
                 editable: true,
                 dayMaxEvents: 1,
-                initialDate: '2021-02-01',
+                initialDate: '2021-01-01',
                 eventDataTransform: function(eventData) {
                     eventData.title = eventData.tlc;
                     eventData.start = new Date(eventData.departure_date);

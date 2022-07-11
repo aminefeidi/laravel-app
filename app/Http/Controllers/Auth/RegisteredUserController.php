@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
             'fName' => ['required', 'string', 'max:255'],
             'lName' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'matricule' => ['required', 'string', 'min:8', 'max:8'],
+            'matricule' => ['required', 'string'],
             'personnel' => ['required', 'string', 'max:255'],
             'profession' => ['required', 'string', 'max:255'],
             'phone_number' => ['required', 'string', 'max:255'],
