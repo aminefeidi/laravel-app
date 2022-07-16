@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\ProgrammeController;
+use App\Http\Controllers\ReserveController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,5 +38,8 @@ Route::get('/demandes/export', [DemandeController::class, 'export'])->name('dema
 
 Route::delete('/demandes/{demande}', [DemandeController::class, 'destroy'])->name('demandes.destroy');
 
+Route::get('/reserves', [ReserveController::class, 'index'])->name('reserves');
+
+Route::get('/reserves/data', [ReserveController::class, 'findAll'])->name('reserves.data');
 
 require __DIR__ . '/auth.php';

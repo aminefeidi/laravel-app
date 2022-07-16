@@ -72,7 +72,7 @@ class ProgrammeController extends Controller
                 return back();
             }
         } else {
-            return back()->withErrors(['spreadsheet' => 'Please select a file']);
+            return back()->withErrors(['spreadsheet' => 'Please select a csv file']);
         }
     }
 
