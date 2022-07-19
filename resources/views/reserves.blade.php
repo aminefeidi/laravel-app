@@ -1,4 +1,4 @@
-<script src="https://unpkg.com/alpinejs@3.1.x/dist/cdn.min.js" defer></script>
+<x-app-layout>
 <style>
     td,
     th {
@@ -9,56 +9,96 @@
         cursor: pointer;
     }
 </style>
-<div x-data="reserveData">
-    <table x-data="{
-        headers: ['Matricule',
-            'DEPARTURE_TIME',
-            'ARRIVAL_TIME',
-            'AIRPORT_C_IS_DEP	CREDIT',
-            'CORPS',
-            'SENIORITY',
-            'ISSENIOR',
-            'Date',
-        ]
-    }" id="reserveTable">
-        <thead>
-            <tr>
-                <template x-for="h in headers">
-                    <th @click="sort(h)" x-text="h"></th>
-                </template>
-            </tr>
-        </thead>
-        <tbody>
-            <template x-if="!reserves">
-                <tr>
-                    <td colspan="4"><i>Loading...</i></td>
-                </tr>
-            </template>
-            <template x-for="reserve in pagedreserves" :key="reserve.id">
-                <tr>
-                    <template x-for="h in headers">
-                        <td x-text="reserve[h]"></td>
-                    </template>
-                </tr>
-            </template>
-        </tbody>
-    </table>
-    <button @click="previousPage">Previous</button> <button @click="nextPage">Next</button>
-</div>
+<div class="card my-4">
+        <div class="card-body" x-data="">
+            <div class="row justify-content-between">
+
+                <div class="col-4">
+                    <h2>Suivi Reserves</h2>
+                </div>
+                <div class="col-6">
+                    <x-auth-validation-errors class="mb-3" :errors="$errors" />
+                    <form action="" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row">
+                            <div class="col w-75">
+
+                                <input class="form-control" type="file" id="spreadsheet" name="spreadsheet" />
+                            </div>
+
+
+                            <button type="submit" class="btn btn-primary text-light w-25">Import</button>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+            <div class="table-responsive" x-data="reserveData">
+                <table id="reserveTable" class="table table-responsive">
+                    <thead>
+                        <tr class="bg-light">
+                            <th @click="sort('Matricule')">Matricule</th>
+                            <th @click="sort('DEPARTURE_TIME')" >DEPARTURE_TIME</th>
+                            <th @click="sort('ARRIVAL_TIME')" >ARRIVAL_TIME</th>
+                            <th @click="sort('AIRPORT_C_IS_DEP')" >AIRPORT_C_IS_DEP</th>
+                            <th @click="sort('CREDIT')" >CREDIT</th>
+                            <th @click="sort('CORPS')" >CORPS</th>
+                            <th @click="sort('SENIORITY')" >SENIORITY</th>
+                            <th @click="sort('ISSENIOR')" >ISSENIOR</th>
+                            <th @click="sort('Date')" >Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-if="!reserves">
+                            <tr>
+                                <td colspan="4"><i>Loading...</i></td>
+                            </tr>
+                        </template>
+                        <template x-for="reserve in pagedreserves" :key="reserve.id">
+                            <tr>
+                                <td x-text="reserve.Matricule"></td>
+                                <td x-text="reserve.DEPARTURE_TIME"></td>
+                                <td x-text="reserve.ARRIVAL_TIME"></td>
+                                <td x-text="reserve.AIRPORT_C_IS_DEP"></td>
+                                <td x-text="reserve.CREDIT"></td>
+                                <td x-text="reserve.CORPS"></td>
+                                <td x-text="reserve.SENIORITY"></td>
+                                <td x-text="reserve.ISSENIOR"></td>
+                                <td x-text="reserve.Date"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <button class="btn btn-outline-primary" @click="previousPage">Previous</button> <button class="btn btn-outline-primary" @click="nextPage">Next</button>
+            </div>
+        </div>
+    </div>
+
 
 <script>
     document.addEventListener('alpine:init', () => {
+        
         Alpine.data('reserveData', () => ({
+            headers: ['Matricule',
+                        'DEPARTURE_TIME',
+                        'ARRIVAL_TIME',
+                        'AIRPORT_C_IS_DEP',
+                        'CREDIT',
+                        'CORPS',
+                        'SENIORITY',
+                        'ISSENIOR',
+                        'Date'],
             reserves: null,
             sortCol: null,
             sortAsc: false,
-            pageSize: 4,
+            pageSize: 10,
             curPage: 1,
             async init() {
+                console.log(this.headers);
                 let resp = await fetch('/reserves/data');
                 // Add an ID value
                 let data = await resp.json();
-                data.forEach((d, i) => d.id = i);
                 this.reserves = data;
             },
             nextPage() {
@@ -88,3 +128,4 @@
         }))
     });
 </script>
+</x-app-layout>

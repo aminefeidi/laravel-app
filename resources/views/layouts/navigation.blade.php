@@ -20,7 +20,7 @@
                     {{ __('Gestion des demandes') }}
                 </x-nav-link>
 
-                <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-nav-link href="{{ route('reserves') }}" :active="request()->routeIs('reserves')">
                     {{ __('Suivi des reserves') }}
                 </x-nav-link>
 

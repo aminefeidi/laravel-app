@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Reserve;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class ReserveController extends Controller
 {
@@ -44,14 +45,18 @@ class ReserveController extends Controller
                     // $arrDate = Carbon::createFromFormat('m/d/Y H:i', $arrDateExp)->format('Y-m-d H:i');
                     $reserve = new Reserve();
                     $reserve->Matricule = $row['Matricule'];
-                    $reserve->DEPARTURETIME = $row['DEPARTURE_TIME'];
-                    $reserve->ARRIVALTIME = $row['ARRIVAL_TIME'];
+                    $reserve->DEPARTURE_TIME = substr_replace($row['DEPARTURE_TIME'], ':', 2, 0);
+                    $reserve->ARRIVAL_TIME = substr_replace($row['ARRIVAL_TIME'], ':', 2, 0);
                     $reserve->AIRPORT_C_IS_DEP = $row['AIRPORT_C_IS_DEP'];
                     $reserve->CREDIT = $row['CREDIT'];
                     $reserve->CORPS = $row['CORPS'];
                     $reserve->SENIORITY = $row['SENIORITY'];
-                    $reserve->ISSENIOR = $row['ISSENIOR'];
-                    $reserve->Date = $row['Date'];
+                    if(strlen($row['ISSENIOR']) == 0){
+                        $reserve->ISSENIOR = 0;
+                    }else{
+                        $reserve->ISSENIOR = 1;
+                    }
+                    $reserve->Date = Carbon::createFromFormat('d/m/Y', $row['Date'])->format('Y-m-d');
                     $reserve->save();
                 }
                 return back();

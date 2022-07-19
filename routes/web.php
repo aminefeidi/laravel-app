@@ -42,4 +42,6 @@ Route::get('/reserves', [ReserveController::class, 'index'])->name('reserves');
 
 Route::get('/reserves/data', [ReserveController::class, 'findAll'])->name('reserves.data');
 
+Route::post('/reserves', [ReserveController::class, 'import'])->name('reserves.import');
+
 require __DIR__ . '/auth.php';
