@@ -25,7 +25,8 @@
                         <div class="row">
                             <div class="col w-75">
 
-                                <input class="form-control" type="file" id="spreadsheet" name="spreadsheet" />
+                                <input class="form-control" type="file" accept=".csv" id="spreadsheet"
+                                    name="spreadsheet" />
                             </div>
 
 
@@ -96,9 +97,9 @@
                 dayMaxEvents: 1,
                 initialDate: '2021-01-01',
                 eventDataTransform: function(eventData) {
-                    eventData.title = eventData.tlc;
-                    eventData.start = new Date(eventData.departure_date);
-                    eventData.end = new Date(eventData.arrival_date);
+                    eventData.title = eventData.FN_CARRIER;
+                    eventData.start = new Date(eventData.DEP_SCHED_DT);
+                    eventData.end = new Date(eventData.ARR_SCHED_DT);
                     return eventData;
                 },
                 eventClick: function(info) {

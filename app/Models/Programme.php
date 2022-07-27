@@ -14,16 +14,5 @@ class Programme extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'tlc',
-        'ac_type_code',
-        'airline',
-        'flight_no',
-        'departure_date',
-        'arrival_date',
-        'airport_c_is_dep',
-        'airport_c_is_dest',
-        'code',
-        'type',
-    ];
+    protected $fillable = ["FN_CARRIER", "FN_NUMBER", "FN_SUFFIX", "DAY_OF_ORIGIN", "AC_OWNER", "AC_SUBTYPE", "AC_LOGICAL_NO", "AC_VERSION", "AC_REGISTRATION", "DEP_AP_ACTUAL", "DEP_AP_SCHED", "NEXT_INFO_DT", "DEP_DT_EST", "DEP_SCHED_DT", "ARR_AP_ACTUAL", "ARR_AP_SCHED", "ARR_DT_EST", "ARR_SCHED_DT", "SLOT_TIME_ACTUAL", "LEG_STATE", "LEG_TYPE", "EMPLOYER_COCKPIT", "EMPLOYER_CABIN", "FLIGHT_HOURS", "FLIGHT_MINUTES", "CYCLES", "DELAY_CODE_01", "DELAY_CODE_02", "DELAY_CODE_03", "DELAY_CODE_04", "DELAY_TIME_01", "DELAY_TIME_02", "DELAY_TIME_03", "DELAY_TIME_04", "SUBDELAY_CODE_01", "SUBDELAY_CODE_02", "SUBDELAY_CODE_03", "SUBDELAY_CODE_04", "PAX_BOOKED_F", "PAX_BOOKED_C", "PAX_BOOKED_Y", "PAX_BOOKED_TRS_F", "PAX_BOOKED_TRS_C", "PAX_BOOKED_TRS_Y", "PAD_BOOKED_F", "PAD_BOOKED_C", "PAD_BOOKED_Y", "PAD_BOOKED_TRS_F", "PAD_BOOKED_TRS_C", "PAD_BOOKED_TRS_Y", "PAX_FLOWN_MALE", "PAX_FLOWN_FEMALE", "PAX_FLOWN_ADULT", "PAX_FLOWN_CHILDREN", "PAX_INFANT", "PAX_FLOWN_F", "PAX_FLOWN_C", "PAX_FLOWN_Y"];
 }
