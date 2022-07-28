@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reserve;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class ReserveController extends Controller
 {
@@ -20,7 +21,10 @@ class ReserveController extends Controller
 
     public function findAll()
     {
-        $data = Reserve::all();
+        $data = DB::table('reserves')
+            ->orderBy('SENIORITY', 'asc')
+            ->orderBy('CREDIT', 'desc')
+            ->get();
         return response()->json($data);
     }
 
@@ -51,9 +55,9 @@ class ReserveController extends Controller
                     $reserve->CREDIT = $row['CREDIT'];
                     $reserve->CORPS = $row['CORPS'];
                     $reserve->SENIORITY = $row['SENIORITY'];
-                    if(strlen($row['ISSENIOR']) == 0){
+                    if (strlen($row['ISSENIOR']) == 0) {
                         $reserve->ISSENIOR = 0;
-                    }else{
+                    } else {
                         $reserve->ISSENIOR = 1;
                     }
                     $reserve->Date = Carbon::createFromFormat('d/m/Y', $row['Date'])->format('Y-m-d');

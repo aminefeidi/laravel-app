@@ -28,7 +28,7 @@
                     {{ __('Suivi des open-time') }}
                 </x-nav-link>
 
-                <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                <x-nav-link href="{{ route('notes') }}" :active="request()->routeIs('notes')">
                     {{ __('Gestion des notes') }}
                 </x-nav-link>
             </ul>

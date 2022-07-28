@@ -28,7 +28,7 @@ Route::get('/demandes', [DemandeController::class, 'index'])->name('demandes');
 
 Route::get('/programme', [ProgrammeController::class, 'index'])->name('programme');
 
-Route::post('/programme', [ProgrammeController::class, 'import'])->name('programme.import');
+Route::post('/programme', [ProgrammeController::class, 'importExcel'])->name('programme.import');
 
 Route::get('/programme/data', [ProgrammeController::class, 'findAll'])->name('programme.data');
 
@@ -43,5 +43,9 @@ Route::get('/reserves', [ReserveController::class, 'index'])->name('reserves');
 Route::get('/reserves/data', [ReserveController::class, 'findAll'])->name('reserves.data');
 
 Route::post('/reserves', [ReserveController::class, 'import'])->name('reserves.import');
+
+Route::get('/notes', function () {
+    return view('notes');
+})->name('notes');
 
 require __DIR__ . '/auth.php';

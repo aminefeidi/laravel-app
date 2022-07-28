@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\ProgrammeImport;
 use App\Models\Programme;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class ProgrammeController extends Controller
 {
@@ -16,9 +19,7 @@ class ProgrammeController extends Controller
      */
     public function index()
     {
-        return view('programme', [
-            'data' => Programme::all(),
-        ]);
+        return view('programme');
     }
 
     public function findAll(Request $request)
@@ -125,6 +126,87 @@ class ProgrammeController extends Controller
             return back()->withErrors(['spreadsheet' => 'Please select a file']);
         }
     }
+
+    public function importExcel(Request $request)
+    {
+        ini_set('max_execution_time', 300);
+        $request->validate([
+            'spreadsheet' => 'required|max:10000|mimes:xlsx,xls',
+        ]);
+        if ($request->hasFile('spreadsheet')) {
+            $file = $request->file('spreadsheet');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension == 'xlsx') {
+                Programme::truncate();
+                //Excel::import(new ProgrammeImport, $file);
+                $users = (new FastExcel)->import($file, function ($line) {
+                    Log::debug($line);
+                    return Programme::create([
+                        'fn_carrier' => $line['FN_CARRIER'],
+                        'fn_number' => $line['FN_NUMBER'],
+                        'fn_suffix' => $line['FN_SUFFIX'],
+                        'day_of_origin' => $line['DAY_OF_ORIGIN'],
+                        'ac_owner' => $line['AC_OWNER'],
+                        'ac_subtype' => $line['AC_SUBTYPE'],
+                        'ac_logical_no' => $line['AC_LOGICAL_NO'],
+                        'ac_version' => $line['AC_VERSION'],
+                        'ac_registration' => $line['AC_REGISTRATION'],
+                        'dep_ap_actual' => $line['DEP_AP_ACTUAL'],
+                        'dep_ap_sched' => $line['DEP_AP_SCHED'],
+                        'next_info_dt' => $line['NEXT_INFO_DT'],
+                        'dep_dt_est' => $line['DEP_DT_EST'],
+                        'dep_sched_dt' => $line['DEP_SCHED_DT'],
+                        'arr_ap_actual' => $line['ARR_AP_ACTUAL'],
+                        'arr_ap_sched' => $line['ARR_AP_SCHED'],
+                        'arr_dt_est' => $line['ARR_DT_EST'],
+                        'arr_sched_dt' => $line['ARR_SCHED_DT'],
+                        'slot_time_actual' => $line['SLOT_TIME_ACTUAL'],
+                        'leg_state' => $line['LEG_STATE'],
+                        'leg_type' => $line['LEG_TYPE'],
+                        'employer_cockpit' => $line['EMPLOYER_COCKPIT'],
+                        'employer_cabin' => $line['EMPLOYER_CABIN'],
+                        'flight_hours' => $line['FLIGHT_HOURS'],
+                        'flight_minutes' => $line['FLIGHT_MINUTES'],
+                        'cycles' => $line['CYCLES'],
+                        'delay_code_01' => $line['DELAY_CODE_01'],
+                        'delay_code_02' => $line['DELAY_CODE_02'],
+                        'delay_code_03' => $line['DELAY_CODE_03'],
+                        'delay_code_04' => $line['DELAY_CODE_04'],
+                        'delay_time_01' => $line['DELAY_TIME_01'],
+                        'delay_time_02' => $line['DELAY_TIME_02'],
+                        'delay_time_03' => $line['DELAY_TIME_03'],
+                        'delay_time_04' => $line['DELAY_TIME_04'],
+                        'subdelay_code_01' => $line['SUBDELAY_CODE_01'],
+                        'subdelay_code_02' => $line['SUBDELAY_CODE_02'],
+                        'subdelay_code_03' => $line['SUBDELAY_CODE_03'],
+                        'subdelay_code_04' => $line['SUBDELAY_CODE_04'],
+                        'pax_booked_f' => $line['PAX_BOOKED_F'],
+                        'pax_booked_c' => $line['PAX_BOOKED_C'],
+                        'pax_booked_y' => $line['PAX_BOOKED_Y'],
+                        'pax_booked_trs_f' => $line['PAX_BOOKED_TRS_F'],
+                        'pax_booked_trs_c' => $line['PAX_BOOKED_TRS_C'],
+                        'pax_booked_trs_y' => $line['PAX_BOOKED_TRS_Y'],
+                        'pad_booked_f' => $line['PAD_BOOKED_F'],
+                        'pad_booked_c' => $line['PAD_BOOKED_C'],
+                        'pad_booked_y' => $line['PAD_BOOKED_Y'],
+                        'pad_booked_trs_f' => $line['PAD_BOOKED_TRS_F'],
+                        'pad_booked_trs_c' => $line['PAD_BOOKED_TRS_C'],
+                        'pad_booked_trs_y' => $line['PAD_BOOKED_TRS_Y'],
+                        'pax_flown_male' => $line['PAX_FLOWN_MALE'],
+                        'pax_flown_female' => $line['PAX_FLOWN_FEMALE'],
+                        'pax_flown_adult' => $line['PAX_FLOWN_ADULT'],
+                        'pax_flown_children' => $line['PAX_FLOWN_CHILDREN'],
+                        'pax_infant' => $line['PAX_INFANT'],
+                        'pax_flown_f' => $line['PAX_FLOWN_F'],
+                        'pax_flown_c' => $line['PAX_FLOWN_C'],
+                        'pax_flown_y' => $line['PAX_FLOWN_Y'],
+                    ]);
+                });
+                return back();
+            }
+        }
+    }
+
 
     /**
      * Show the form for creating a new resource.
