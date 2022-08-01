@@ -15,6 +15,16 @@ class Programme extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'tlc',
+        'ac_type_code',
+        'airline',
+        'flight_no',
+        'departure_date',
+        'arrival_date',
+        'airport_c_is_dep',
+        'airport_c_is_dest',
+        'code',
+        'type',
         'fn_carrier',
         'fn_number',
         'fn_suffix',

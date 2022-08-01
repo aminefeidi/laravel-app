@@ -31,7 +31,8 @@ class ProgrammeController extends Controller
         }
         $start = $request->get('start');
         $end = $request->get('end');
-        $data = Programme::where('DEP_SCHED_DT', '>=', $start)->where('ARR_SCHED_DT', '<=', $end)->get();
+        $data = Programme::where('departure_date', '>=', $start)->where('departure_date', '<=', $end)->where('tlc', '=', $request->user()->matricule)->get();
+        //$data = Programme::where('DEP_SCHED_DT', '>=', $start)->where('ARR_SCHED_DT', '<=', $end)->get();
         return response()->json($data);
     }
 
@@ -141,66 +142,171 @@ class ProgrammeController extends Controller
                 //Excel::import(new ProgrammeImport, $file);
                 $users = (new FastExcel)->import($file, function ($line) {
                     Log::debug($line);
+                    if (strlen($line['DEPARTURE_TIME']) < 4 || strlen($line['ARRIVAL_TIME']) < 4 || $line['TLC'] == '') {
+                        return null;
+                    }
+                    //$depDateExp = $line['DEPARTURE_DATE'] . ' ' . substr_replace($line['DEPARTURE_TIME'], ':', 2, 0);
+                    //$arrDateExp = $line['ARRIVAL_DATE'] . ' ' . substr_replace($line['ARRIVAL_TIME'], ':', 2, 0);
+                    //$depDate = Carbon::createFromFormat('m/d/Y H:i', $depDateExp)->format('Y-m-d H:i');
+                    //$arrDate = Carbon::createFromFormat('m/d/Y H:i', $arrDateExp)->format('Y-m-d H:i');
                     return Programme::create([
-                        'fn_carrier' => $line['FN_CARRIER'],
-                        'fn_number' => $line['FN_NUMBER'],
-                        'fn_suffix' => $line['FN_SUFFIX'],
+                        'tlc' => $line['TLC'],
+                        'departure_date' => date_time_set($line['DEPARTURE_DATE'], substr($line['DEPARTURE_TIME'], 0, 2), substr($line['DEPARTURE_TIME'], 2, 2)),
+                        'arrival_date' => date_time_set($line['ARRIVAL_DATE'], substr($line['ARRIVAL_TIME'], 0, 2), substr($line['ARRIVAL_TIME'], 2, 2)),
+                        'airport_c_is_dep' => $line['AIRPORT_C_IS_DEP'],
+                        'airport_c_is_dest' => $line['AIRPORT_C_IS_DEST'],
+                        'airline' => $line['AIRLINE'],
+                        'flight_no' => $line['FLIGHT_NO'],
+                        'ac_type_code' => $line['AC_TYPE_CODE'],
+                        'code' => $line['CODE'],
+                        'type' => $line['TYPE'],
                         'day_of_origin' => $line['DAY_OF_ORIGIN'],
-                        'ac_owner' => $line['AC_OWNER'],
-                        'ac_subtype' => $line['AC_SUBTYPE'],
-                        'ac_logical_no' => $line['AC_LOGICAL_NO'],
-                        'ac_version' => $line['AC_VERSION'],
-                        'ac_registration' => $line['AC_REGISTRATION'],
-                        'dep_ap_actual' => $line['DEP_AP_ACTUAL'],
-                        'dep_ap_sched' => $line['DEP_AP_SCHED'],
-                        'next_info_dt' => $line['NEXT_INFO_DT'],
-                        'dep_dt_est' => $line['DEP_DT_EST'],
-                        'dep_sched_dt' => $line['DEP_SCHED_DT'],
-                        'arr_ap_actual' => $line['ARR_AP_ACTUAL'],
-                        'arr_ap_sched' => $line['ARR_AP_SCHED'],
-                        'arr_dt_est' => $line['ARR_DT_EST'],
-                        'arr_sched_dt' => $line['ARR_SCHED_DT'],
-                        'slot_time_actual' => $line['SLOT_TIME_ACTUAL'],
-                        'leg_state' => $line['LEG_STATE'],
-                        'leg_type' => $line['LEG_TYPE'],
-                        'employer_cockpit' => $line['EMPLOYER_COCKPIT'],
-                        'employer_cabin' => $line['EMPLOYER_CABIN'],
-                        'flight_hours' => $line['FLIGHT_HOURS'],
-                        'flight_minutes' => $line['FLIGHT_MINUTES'],
-                        'cycles' => $line['CYCLES'],
-                        'delay_code_01' => $line['DELAY_CODE_01'],
-                        'delay_code_02' => $line['DELAY_CODE_02'],
-                        'delay_code_03' => $line['DELAY_CODE_03'],
-                        'delay_code_04' => $line['DELAY_CODE_04'],
-                        'delay_time_01' => $line['DELAY_TIME_01'],
-                        'delay_time_02' => $line['DELAY_TIME_02'],
-                        'delay_time_03' => $line['DELAY_TIME_03'],
-                        'delay_time_04' => $line['DELAY_TIME_04'],
-                        'subdelay_code_01' => $line['SUBDELAY_CODE_01'],
-                        'subdelay_code_02' => $line['SUBDELAY_CODE_02'],
-                        'subdelay_code_03' => $line['SUBDELAY_CODE_03'],
-                        'subdelay_code_04' => $line['SUBDELAY_CODE_04'],
-                        'pax_booked_f' => $line['PAX_BOOKED_F'],
-                        'pax_booked_c' => $line['PAX_BOOKED_C'],
-                        'pax_booked_y' => $line['PAX_BOOKED_Y'],
-                        'pax_booked_trs_f' => $line['PAX_BOOKED_TRS_F'],
-                        'pax_booked_trs_c' => $line['PAX_BOOKED_TRS_C'],
-                        'pax_booked_trs_y' => $line['PAX_BOOKED_TRS_Y'],
-                        'pad_booked_f' => $line['PAD_BOOKED_F'],
-                        'pad_booked_c' => $line['PAD_BOOKED_C'],
-                        'pad_booked_y' => $line['PAD_BOOKED_Y'],
-                        'pad_booked_trs_f' => $line['PAD_BOOKED_TRS_F'],
-                        'pad_booked_trs_c' => $line['PAD_BOOKED_TRS_C'],
-                        'pad_booked_trs_y' => $line['PAD_BOOKED_TRS_Y'],
-                        'pax_flown_male' => $line['PAX_FLOWN_MALE'],
-                        'pax_flown_female' => $line['PAX_FLOWN_FEMALE'],
-                        'pax_flown_adult' => $line['PAX_FLOWN_ADULT'],
-                        'pax_flown_children' => $line['PAX_FLOWN_CHILDREN'],
-                        'pax_infant' => $line['PAX_INFANT'],
-                        'pax_flown_f' => $line['PAX_FLOWN_F'],
-                        'pax_flown_c' => $line['PAX_FLOWN_C'],
-                        'pax_flown_y' => $line['PAX_FLOWN_Y'],
+                        // 'fn_carrier' => $line['FN_CARRIER'],
+                        // 'fn_number' => $line['FN_NUMBER'],
+                        // 'fn_suffix' => $line['FN_SUFFIX'],
+                        // 'day_of_origin' => $line['DAY_OF_ORIGIN'],
+                        // 'ac_owner' => $line['AC_OWNER'],
+                        // 'ac_subtype' => $line['AC_SUBTYPE'],
+                        // 'ac_logical_no' => $line['AC_LOGICAL_NO'],
+                        // 'ac_version' => $line['AC_VERSION'],
+                        // 'ac_registration' => $line['AC_REGISTRATION'],
+                        // 'dep_ap_actual' => $line['DEP_AP_ACTUAL'],
+                        // 'dep_ap_sched' => $line['DEP_AP_SCHED'],
+                        // 'next_info_dt' => $line['NEXT_INFO_DT'],
+                        // 'dep_dt_est' => $line['DEP_DT_EST'],
+                        // 'dep_sched_dt' => $line['DEP_SCHED_DT'],
+                        // 'arr_ap_actual' => $line['ARR_AP_ACTUAL'],
+                        // 'arr_ap_sched' => $line['ARR_AP_SCHED'],
+                        // 'arr_dt_est' => $line['ARR_DT_EST'],
+                        // 'arr_sched_dt' => $line['ARR_SCHED_DT'],
+                        // 'slot_time_actual' => $line['SLOT_TIME_ACTUAL'],
+                        // 'leg_state' => $line['LEG_STATE'],
+                        // 'leg_type' => $line['LEG_TYPE'],
+                        // 'employer_cockpit' => $line['EMPLOYER_COCKPIT'],
+                        // 'employer_cabin' => $line['EMPLOYER_CABIN'],
+                        // 'flight_hours' => $line['FLIGHT_HOURS'],
+                        // 'flight_minutes' => $line['FLIGHT_MINUTES'],
+                        // 'cycles' => $line['CYCLES'],
+                        // 'delay_code_01' => $line['DELAY_CODE_01'],
+                        // 'delay_code_02' => $line['DELAY_CODE_02'],
+                        // 'delay_code_03' => $line['DELAY_CODE_03'],
+                        // 'delay_code_04' => $line['DELAY_CODE_04'],
+                        // 'delay_time_01' => $line['DELAY_TIME_01'],
+                        // 'delay_time_02' => $line['DELAY_TIME_02'],
+                        // 'delay_time_03' => $line['DELAY_TIME_03'],
+                        // 'delay_time_04' => $line['DELAY_TIME_04'],
+                        // 'subdelay_code_01' => $line['SUBDELAY_CODE_01'],
+                        // 'subdelay_code_02' => $line['SUBDELAY_CODE_02'],
+                        // 'subdelay_code_03' => $line['SUBDELAY_CODE_03'],
+                        // 'subdelay_code_04' => $line['SUBDELAY_CODE_04'],
+                        // 'pax_booked_f' => $line['PAX_BOOKED_F'],
+                        // 'pax_booked_c' => $line['PAX_BOOKED_C'],
+                        // 'pax_booked_y' => $line['PAX_BOOKED_Y'],
+                        // 'pax_booked_trs_f' => $line['PAX_BOOKED_TRS_F'],
+                        // 'pax_booked_trs_c' => $line['PAX_BOOKED_TRS_C'],
+                        // 'pax_booked_trs_y' => $line['PAX_BOOKED_TRS_Y'],
+                        // 'pad_booked_f' => $line['PAD_BOOKED_F'],
+                        // 'pad_booked_c' => $line['PAD_BOOKED_C'],
+                        // 'pad_booked_y' => $line['PAD_BOOKED_Y'],
+                        // 'pad_booked_trs_f' => $line['PAD_BOOKED_TRS_F'],
+                        // 'pad_booked_trs_c' => $line['PAD_BOOKED_TRS_C'],
+                        // 'pad_booked_trs_y' => $line['PAD_BOOKED_TRS_Y'],
+                        // 'pax_flown_male' => $line['PAX_FLOWN_MALE'],
+                        // 'pax_flown_female' => $line['PAX_FLOWN_FEMALE'],
+                        // 'pax_flown_adult' => $line['PAX_FLOWN_ADULT'],
+                        // 'pax_flown_children' => $line['PAX_FLOWN_CHILDREN'],
+                        // 'pax_infant' => $line['PAX_INFANT'],
+                        // 'pax_flown_f' => $line['PAX_FLOWN_F'],
+                        // 'pax_flown_c' => $line['PAX_FLOWN_C'],
+                        // 'pax_flown_y' => $line['PAX_FLOWN_Y'],
                     ]);
+                });
+                return back();
+            }
+        }
+    }
+
+    public function importExcel2(Request $request)
+    {
+        ini_set('max_execution_time', 300);
+        $request->validate([
+            'spreadsheet2' => 'required|max:10000|mimes:xlsx,xls',
+        ]);
+        if ($request->hasFile('spreadsheet2')) {
+            $file = $request->file('spreadsheet2');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension == 'xlsx') {
+                $users = (new FastExcel)->import($file, function ($line) {
+                    Log::debug($line);
+                    //$depDateExp = $line['DEPARTURE_DATE'] . ' ' . substr_replace($line['DEPARTURE_TIME'], ':', 2, 0);
+                    //$arrDateExp = $line['ARRIVAL_DATE'] . ' ' . substr_replace($line['ARRIVAL_TIME'], ':', 2, 0);
+                    //$depDate = Carbon::createFromFormat('m/d/Y H:i', $depDateExp)->format('Y-m-d H:i');
+                    //$arrDate = Carbon::createFromFormat('m/d/Y H:i', $arrDateExp)->format('Y-m-d H:i');
+                    return Programme::where('flight_no', '=', trim($line['FN_NUMBER']))
+                        ->where('day_of_origin', $line['DAY_OF_ORIGIN'])
+                        ->orWhere('departure_date', $line['DEP_SCHED_DT'])
+                        ->update(
+                            [
+                                'fn_carrier' => $line['FN_CARRIER'],
+                                'fn_number' => $line['FN_NUMBER'],
+                                'fn_suffix' => $line['FN_SUFFIX'],
+                                'day_of_origin' => $line['DAY_OF_ORIGIN'],
+                                'ac_owner' => $line['AC_OWNER'],
+                                'ac_subtype' => $line['AC_SUBTYPE'],
+                                'ac_logical_no' => $line['AC_LOGICAL_NO'],
+                                'ac_version' => $line['AC_VERSION'],
+                                'ac_registration' => $line['AC_REGISTRATION'],
+                                'dep_ap_actual' => $line['DEP_AP_ACTUAL'],
+                                'dep_ap_sched' => $line['DEP_AP_SCHED'],
+                                'next_info_dt' => $line['NEXT_INFO_DT'],
+                                'dep_dt_est' => $line['DEP_DT_EST'],
+                                'dep_sched_dt' => $line['DEP_SCHED_DT'],
+                                'arr_ap_actual' => $line['ARR_AP_ACTUAL'],
+                                'arr_ap_sched' => $line['ARR_AP_SCHED'],
+                                'arr_dt_est' => $line['ARR_DT_EST'],
+                                'arr_sched_dt' => $line['ARR_SCHED_DT'],
+                                'slot_time_actual' => $line['SLOT_TIME_ACTUAL'],
+                                'leg_state' => $line['LEG_STATE'],
+                                'leg_type' => $line['LEG_TYPE'],
+                                'employer_cockpit' => $line['EMPLOYER_COCKPIT'],
+                                'employer_cabin' => $line['EMPLOYER_CABIN'],
+                                'flight_hours' => $line['FLIGHT_HOURS'],
+                                'flight_minutes' => $line['FLIGHT_MINUTES'],
+                                'cycles' => $line['CYCLES'],
+                                'delay_code_01' => $line['DELAY_CODE_01'],
+                                'delay_code_02' => $line['DELAY_CODE_02'],
+                                'delay_code_03' => $line['DELAY_CODE_03'],
+                                'delay_code_04' => $line['DELAY_CODE_04'],
+                                'delay_time_01' => $line['DELAY_TIME_01'],
+                                'delay_time_02' => $line['DELAY_TIME_02'],
+                                'delay_time_03' => $line['DELAY_TIME_03'],
+                                'delay_time_04' => $line['DELAY_TIME_04'],
+                                'subdelay_code_01' => $line['SUBDELAY_CODE_01'],
+                                'subdelay_code_02' => $line['SUBDELAY_CODE_02'],
+                                'subdelay_code_03' => $line['SUBDELAY_CODE_03'],
+                                'subdelay_code_04' => $line['SUBDELAY_CODE_04'],
+                                'pax_booked_f' => $line['PAX_BOOKED_F'],
+                                'pax_booked_c' => $line['PAX_BOOKED_C'],
+                                'pax_booked_y' => $line['PAX_BOOKED_Y'],
+                                'pax_booked_trs_f' => $line['PAX_BOOKED_TRS_F'],
+                                'pax_booked_trs_c' => $line['PAX_BOOKED_TRS_C'],
+                                'pax_booked_trs_y' => $line['PAX_BOOKED_TRS_Y'],
+                                'pad_booked_f' => $line['PAD_BOOKED_F'],
+                                'pad_booked_c' => $line['PAD_BOOKED_C'],
+                                'pad_booked_y' => $line['PAD_BOOKED_Y'],
+                                'pad_booked_trs_f' => $line['PAD_BOOKED_TRS_F'],
+                                'pad_booked_trs_c' => $line['PAD_BOOKED_TRS_C'],
+                                'pad_booked_trs_y' => $line['PAD_BOOKED_TRS_Y'],
+                                'pax_flown_male' => $line['PAX_FLOWN_MALE'],
+                                'pax_flown_female' => $line['PAX_FLOWN_FEMALE'],
+                                'pax_flown_adult' => $line['PAX_FLOWN_ADULT'],
+                                'pax_flown_children' => $line['PAX_FLOWN_CHILDREN'],
+                                'pax_infant' => $line['PAX_INFANT'],
+                                'pax_flown_f' => $line['PAX_FLOWN_F'],
+                                'pax_flown_c' => $line['PAX_FLOWN_C'],
+                                'pax_flown_y' => $line['PAX_FLOWN_Y'],
+                            ]
+                        );
                 });
                 return back();
             }

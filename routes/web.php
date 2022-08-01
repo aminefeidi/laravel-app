@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DemandeController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\ProgrammeController;
 use App\Http\Controllers\ReserveController;
 use Illuminate\Support\Facades\Route;
@@ -28,7 +29,9 @@ Route::get('/demandes', [DemandeController::class, 'index'])->name('demandes');
 
 Route::get('/programme', [ProgrammeController::class, 'index'])->name('programme');
 
-Route::post('/programme', [ProgrammeController::class, 'importExcel'])->name('programme.import');
+Route::post('/programme/import', [ProgrammeController::class, 'importExcel'])->name('programme.import');
+
+Route::post('/programme/import_flights', [ProgrammeController::class, 'importExcel2'])->name('programme.flights');
 
 Route::get('/programme/data', [ProgrammeController::class, 'findAll'])->name('programme.data');
 
@@ -44,8 +47,8 @@ Route::get('/reserves/data', [ReserveController::class, 'findAll'])->name('reser
 
 Route::post('/reserves', [ReserveController::class, 'import'])->name('reserves.import');
 
-Route::get('/notes', function () {
-    return view('notes');
-})->name('notes');
+Route::get('/notes', [NoteController::class, 'index'])->name('notes');
+
+Route::post('/notes', [NoteController::class, 'store'])->name('notes.store');
 
 require __DIR__ . '/auth.php';
